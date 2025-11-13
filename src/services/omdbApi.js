@@ -3,8 +3,8 @@ import axios from "axios";
 // Create OMDb API service
 const createOmdbService = () => {
   const API_KEY = "512835a2";
-  const BASE_URL = "http://www.omdbapi.com/";
-  const POSTER_URL = "http://img.omdbapi.com/";
+  const BASE_URL = "https://www.omdbapi.com/"; // Changed to HTTPS
+  const POSTER_URL = "https://img.omdbapi.com/"; // Changed to HTTPS
 
   // Create axios instance
   const omdbInstance = axios.create({
@@ -144,7 +144,8 @@ const createOmdbService = () => {
    * @returns {string} - URL to a default poster image
    */
   const getDefaultPosterUrl = () => {
-    return "https://via.placeholder.com/300x450?text=No+Poster+Available";
+    // Using placehold.co service with movie-themed text and colors
+    return "https://placehold.co/300x450/121826/667799/png?text=No+Movie+Poster+Available&font=montserrat";
   };
 
   return {

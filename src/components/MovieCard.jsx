@@ -131,6 +131,12 @@ const MovieCard = ({ movie, loading, error }) => {
     return source;
   };
 
+  // Generate a custom placeholder URL with the movie title if no poster is available
+  const getCustomPlaceholder = (title) => {
+    const safeTitle = title.replace(/\s+/g, "+");
+    return `https://placehold.co/300x450/121826/667799/png?text=${safeTitle}&font=montserrat`;
+  };
+
   return (
     <div className="w-full max-w-2xl mx-auto p-6 rounded-xl bg-gray-900/50 backdrop-blur-md border border-gray-700 shadow-xl transition-all hover:shadow-purple-500/20">
       <div className="flex flex-col md:flex-row gap-6">
@@ -138,14 +144,16 @@ const MovieCard = ({ movie, loading, error }) => {
         <div className="w-full md:w-2/5 flex-shrink-0 flex justify-center md:justify-start">
           <div className="poster-container h-auto rounded-lg shadow-lg overflow-hidden">
             <img
-              src={safeMovie.poster}
+              src={safeMovie.poster || getCustomPlaceholder(safeMovie.title)}
               alt={`${safeMovie.title} poster`}
               className="w-full h-auto object-contain"
               loading="lazy"
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src =
-                  "https://via.placeholder.com/300x450?text=No+Poster+Available";
+                e.target.src = `https://placehold.co/300x450/121826/667799/png?text=${safeMovie.title.replace(
+                  /\s+/g,
+                  "+"
+                )}&font=montserrat`;
               }}
             />
           </div>
