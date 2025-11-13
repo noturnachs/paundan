@@ -1,29 +1,62 @@
 const MovieCard = ({ movie, loading, error }) => {
   if (loading) {
     return (
-      <div className="w-full max-w-2xl mx-auto p-6 rounded-xl bg-gray-900/50 backdrop-blur-md border border-gray-700 shadow-xl">
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Poster placeholder */}
-          <div className="w-full md:w-2/5 h-64 md:h-96 bg-gray-800 rounded-lg animate-pulse"></div>
-
-          <div className="w-full md:w-3/5 space-y-4">
+      <div className="w-full max-w-4xl mx-auto rounded-xl overflow-hidden shadow-xl">
+        {/* Header placeholder */}
+        <div className="relative w-full h-64 md:h-80 bg-gray-900 animate-pulse">
+          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
             {/* Title placeholder */}
-            <div className="h-8 bg-gray-700 rounded w-3/4 animate-pulse"></div>
-            {/* Year and director placeholder */}
-            <div className="h-4 bg-gray-700 rounded w-1/2 animate-pulse"></div>
-            {/* Synopsis placeholder */}
-            <div className="space-y-2">
-              <div className="h-4 bg-gray-700 rounded animate-pulse"></div>
-              <div className="h-4 bg-gray-700 rounded animate-pulse"></div>
-              <div className="h-4 bg-gray-700 rounded w-5/6 animate-pulse"></div>
+            <div className="h-8 bg-gray-700/60 rounded w-3/4 animate-pulse mb-4"></div>
+            {/* Info row placeholder */}
+            <div className="flex gap-2 mb-4">
+              <div className="h-5 bg-gray-700/60 rounded w-16 animate-pulse"></div>
+              <div className="h-5 bg-gray-700/60 rounded w-20 animate-pulse"></div>
+              <div className="h-5 bg-gray-700/60 rounded w-14 animate-pulse"></div>
             </div>
-            {/* Cast placeholder */}
-            <div className="mt-4">
-              <div className="h-4 bg-gray-700 rounded w-1/4 mb-2 animate-pulse"></div>
-              <div className="flex flex-wrap gap-2">
-                <div className="h-6 bg-gray-700 rounded-full w-20 animate-pulse"></div>
-                <div className="h-6 bg-gray-700 rounded-full w-24 animate-pulse"></div>
-                <div className="h-6 bg-gray-700 rounded-full w-16 animate-pulse"></div>
+            {/* Ratings placeholder */}
+            <div className="flex gap-2">
+              <div className="h-7 bg-gray-700/60 rounded w-24 animate-pulse"></div>
+              <div className="h-7 bg-gray-700/60 rounded w-20 animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Content area placeholder */}
+        <div className="bg-gray-900/30 backdrop-blur-sm border-t border-gray-700/50">
+          <div className="flex flex-col md:flex-row md:items-start">
+            {/* Poster placeholder */}
+            <div className="md:w-2/5 lg:w-2/5 p-6 md:p-8 flex justify-center md:justify-start">
+              <div className="w-full max-w-[280px] aspect-[2/3] bg-gray-800/60 rounded-lg animate-pulse"></div>
+            </div>
+
+            {/* Details placeholder */}
+            <div className="md:w-3/5 lg:w-3/5 p-6 md:p-8 space-y-6">
+              {/* Genres placeholder */}
+              <div className="flex gap-2">
+                <div className="h-6 bg-gray-700/60 rounded w-16 animate-pulse"></div>
+                <div className="h-6 bg-gray-700/60 rounded w-20 animate-pulse"></div>
+                <div className="h-6 bg-gray-700/60 rounded w-14 animate-pulse"></div>
+              </div>
+
+              {/* Director placeholder */}
+              <div className="h-5 bg-gray-700/60 rounded w-40 animate-pulse"></div>
+
+              {/* Synopsis placeholder */}
+              <div className="space-y-2">
+                <div className="h-4 bg-gray-700/60 rounded w-24 animate-pulse mb-2"></div>
+                <div className="h-4 bg-gray-700/60 rounded animate-pulse"></div>
+                <div className="h-4 bg-gray-700/60 rounded animate-pulse"></div>
+                <div className="h-4 bg-gray-700/60 rounded w-5/6 animate-pulse"></div>
+              </div>
+
+              {/* Cast placeholder */}
+              <div>
+                <div className="h-4 bg-gray-700/60 rounded w-24 mb-3 animate-pulse"></div>
+                <div className="flex flex-wrap gap-2">
+                  <div className="h-7 bg-gray-700/60 rounded-full w-20 animate-pulse"></div>
+                  <div className="h-7 bg-gray-700/60 rounded-full w-24 animate-pulse"></div>
+                  <div className="h-7 bg-gray-700/60 rounded-full w-16 animate-pulse"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -34,23 +67,25 @@ const MovieCard = ({ movie, loading, error }) => {
 
   if (error) {
     return (
-      <div className="w-full max-w-2xl mx-auto p-6 rounded-xl bg-red-900/20 backdrop-blur-md border border-red-700 shadow-xl text-center">
-        <svg
-          className="w-12 h-12 mx-auto text-red-500 mb-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          ></path>
-        </svg>
-        <h3 className="text-xl font-medium text-red-300 mb-2">Error</h3>
-        <p className="text-red-200">{error}</p>
+      <div className="w-full max-w-4xl mx-auto rounded-xl overflow-hidden shadow-xl">
+        <div className="bg-red-900/20 backdrop-blur-md border border-red-700 p-8 text-center">
+          <svg
+            className="w-12 h-12 mx-auto text-red-500 mb-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <h3 className="text-xl font-medium text-red-300 mb-2">Error</h3>
+          <p className="text-red-200">{error}</p>
+        </div>
       </div>
     );
   }
@@ -139,31 +174,24 @@ const MovieCard = ({ movie, loading, error }) => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6 rounded-xl bg-gray-900/50 backdrop-blur-md border border-gray-700 shadow-xl transition-all hover:shadow-purple-500/20">
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Movie Poster */}
-        <div className="w-full md:w-2/5 flex-shrink-0 flex justify-center md:justify-start">
-          <div className="poster-container h-auto rounded-lg shadow-lg overflow-hidden">
+    <div className="w-full max-w-4xl mx-auto rounded-xl overflow-hidden shadow-xl transition-all hover:shadow-purple-500/20">
+      {/* Movie Header with Backdrop */}
+      <div className="relative w-full h-64 md:h-80 bg-gray-900">
+        {/* Backdrop Image with Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/90 to-gray-900/30">
+          {safeMovie.poster && (
             <img
-              src={safeMovie.poster || getCustomPlaceholder(safeMovie.title)}
-              alt={`${safeMovie.title} poster`}
-              className="w-full h-auto object-contain"
-              loading="lazy"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = `https://placehold.co/300x450/121826/667799/png?text=${safeMovie.title.replace(
-                  /\s+/g,
-                  "+"
-                )}&font=montserrat`;
-              }}
+              src={safeMovie.poster}
+              alt="Movie backdrop"
+              className="w-full h-full object-cover opacity-40 blur-sm"
             />
-          </div>
+          )}
         </div>
 
-        {/* Movie Details */}
-        <div className="w-full md:w-3/5">
-          <div className="flex justify-between items-start">
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-1">
+        {/* Movie Title and Verification Badge */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+          <div className="flex items-start justify-between">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 drop-shadow-lg">
               {safeMovie.title}
             </h2>
             {safeMovie.verified && (
@@ -184,20 +212,21 @@ const MovieCard = ({ movie, loading, error }) => {
             )}
           </div>
 
-          <div className="flex flex-wrap gap-x-4 text-gray-400 text-sm mb-4">
+          {/* Year, Runtime, Rating, Language */}
+          <div className="flex flex-wrap gap-x-4 text-gray-300 text-sm mb-2">
             <span>{safeMovie.year}</span>
             <span>{safeMovie.runtime}</span>
             {safeMovie.rated && <span>{safeMovie.rated}</span>}
             {safeMovie.language && <span>{safeMovie.language}</span>}
           </div>
 
-          {/* Ratings Section */}
-          <div className="flex flex-wrap gap-2 mb-4">
+          {/* Ratings */}
+          <div className="flex flex-wrap gap-2">
             {safeMovie.ratings && safeMovie.ratings.length > 0
               ? safeMovie.ratings.map((rating, idx) => (
                   <div
                     key={idx}
-                    className={`flex items-center px-2 py-1 bg-gray-800 rounded ${getRatingColor(
+                    className={`flex items-center px-2 py-1 bg-gray-800/80 backdrop-blur-sm rounded ${getRatingColor(
                       rating.Source
                     )}`}
                   >
@@ -209,7 +238,7 @@ const MovieCard = ({ movie, loading, error }) => {
                   </div>
                 ))
               : safeMovie.rating && (
-                  <div className="flex items-center px-2 py-1 bg-gray-800 rounded text-amber-400">
+                  <div className="flex items-center px-2 py-1 bg-gray-800/80 backdrop-blur-sm rounded text-amber-400">
                     <svg
                       className="w-4 h-4 mr-1"
                       fill="currentColor"
@@ -223,58 +252,97 @@ const MovieCard = ({ movie, loading, error }) => {
                   </div>
                 )}
           </div>
+        </div>
+      </div>
 
-          {safeMovie.genre && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {safeMovie.genre.split(", ").map((g, idx) => (
-                <span
-                  key={idx}
-                  className="px-2 py-1 bg-gray-800/70 rounded-md text-xs text-gray-300"
-                >
-                  {g}
-                </span>
-              ))}
+      {/* Content Area with Poster and Details */}
+      <div className="bg-gray-900/30 backdrop-blur-sm border-t border-gray-700/50">
+        <div className="flex flex-col md:flex-row md:items-start">
+          {/* Poster Column - Larger Width */}
+          <div className="md:w-2/5 lg:w-2/5 p-6 md:p-8 flex justify-center md:justify-start">
+            <div className="rounded-lg shadow-2xl overflow-hidden w-full max-w-[280px]">
+              <img
+                src={safeMovie.poster || getCustomPlaceholder(safeMovie.title)}
+                alt={`${safeMovie.title} poster`}
+                className="w-full h-auto object-cover rounded-lg"
+                loading="lazy"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = `https://placehold.co/300x450/121826/667799/png?text=${safeMovie.title.replace(
+                    /\s+/g,
+                    "+"
+                  )}&font=montserrat`;
+                }}
+              />
             </div>
-          )}
-
-          <p className="text-gray-400 mb-3">
-            Directed by{" "}
-            <span className="text-gray-300">{safeMovie.director}</span>
-          </p>
-
-          <div className="max-h-[180px] md:max-h-none overflow-y-auto pr-2 mb-4 synopsis-container">
-            <p className="text-gray-300 text-sm md:text-base">
-              {safeMovie.synopsis}
-            </p>
           </div>
 
-          {safeMovie.awards && safeMovie.awards !== "N/A" && (
-            <p className="text-amber-400 text-sm mb-4">{safeMovie.awards}</p>
-          )}
-
-          {safeMovie.boxOffice && safeMovie.boxOffice !== "N/A" && (
-            <p className="text-green-400 text-sm mb-4">
-              Box Office: {safeMovie.boxOffice}
-            </p>
-          )}
-
-          <div className="mt-4">
-            <h3 className="text-sm font-medium text-gray-400 mb-2">Starring</h3>
-            <div className="flex flex-wrap gap-2">
-              {Array.isArray(safeMovie.starring) ? (
-                safeMovie.starring.map((actor, index) => (
+          {/* Details Column - Flexible Width */}
+          <div className="md:w-3/5 lg:w-3/5 p-6 md:p-8">
+            {/* Genres */}
+            {safeMovie.genre && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {safeMovie.genre.split(", ").map((g, idx) => (
                   <span
-                    key={index}
-                    className="inline-block px-3 py-1 bg-gray-800/70 text-gray-300 rounded-md text-sm"
+                    key={idx}
+                    className="px-2 py-1 bg-gray-800/70 rounded-md text-xs text-gray-300"
                   >
-                    {actor}
+                    {g}
                   </span>
-                ))
-              ) : (
-                <span className="inline-block px-3 py-1 bg-gray-800/70 text-gray-300 rounded-md text-sm">
-                  {safeMovie.starring}
-                </span>
+                ))}
+              </div>
+            )}
+
+            {/* Director */}
+            <p className="text-gray-400 mb-4">
+              Directed by{" "}
+              <span className="text-gray-300">{safeMovie.director}</span>
+            </p>
+
+            {/* Synopsis */}
+            <div className="mb-6">
+              <h3 className="text-sm font-medium text-gray-400 mb-2">
+                Synopsis
+              </h3>
+              <p className="text-gray-300 text-sm md:text-base leading-relaxed">
+                {safeMovie.synopsis}
+              </p>
+            </div>
+
+            {/* Awards and Box Office */}
+            <div className="space-y-2 mb-6">
+              {safeMovie.awards && safeMovie.awards !== "N/A" && (
+                <p className="text-amber-400 text-sm">{safeMovie.awards}</p>
               )}
+
+              {safeMovie.boxOffice && safeMovie.boxOffice !== "N/A" && (
+                <p className="text-green-400 text-sm">
+                  Box Office: {safeMovie.boxOffice}
+                </p>
+              )}
+            </div>
+
+            {/* Cast */}
+            <div>
+              <h3 className="text-sm font-medium text-gray-400 mb-2">
+                Starring
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {Array.isArray(safeMovie.starring) ? (
+                  safeMovie.starring.map((actor, index) => (
+                    <span
+                      key={index}
+                      className="inline-block px-3 py-1 bg-gray-800/70 text-gray-300 rounded-md text-sm"
+                    >
+                      {actor}
+                    </span>
+                  ))
+                ) : (
+                  <span className="inline-block px-3 py-1 bg-gray-800/70 text-gray-300 rounded-md text-sm">
+                    {safeMovie.starring}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>

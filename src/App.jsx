@@ -46,7 +46,7 @@ function App() {
       </div>
 
       <div className="container mx-auto px-4 py-8 md:py-12 relative z-10">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <header className="text-center mb-8 md:mb-12">
             <h1 className="text-3xl md:text-5xl font-bold mb-3 text-white">
               What to Watch?
@@ -126,7 +126,7 @@ function App() {
             </div>
 
             {movie && (
-              <div className="flex flex-col sm:flex-row gap-3 w-full max-w-2xl">
+              <div className="flex flex-col sm:flex-row gap-3 w-full max-w-4xl">
                 <Button
                   onClick={handleRegenerateMovie}
                   disabled={loading}
