@@ -33,7 +33,7 @@ const GenreSelector = ({ onGenreSelect, disabled }) => {
     <div className="relative w-full max-w-xs">
       <button
         type="button"
-        className="flex items-center justify-between w-full px-4 py-3 text-left bg-gray-900/50 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 hover:bg-gray-800/50 transition-colors"
+        className="flex items-center justify-between w-full px-4 py-2.5 text-left bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:bg-gray-700 transition-colors"
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
         aria-haspopup="listbox"
@@ -67,7 +67,7 @@ const GenreSelector = ({ onGenreSelect, disabled }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 w-full mt-1 overflow-auto bg-gray-900/90 backdrop-blur-md border border-gray-700 rounded-lg shadow-lg max-h-60">
+        <div className="absolute z-10 w-full mt-1 overflow-auto bg-gray-800 border border-gray-700 rounded-md shadow-lg max-h-60">
           <ul
             className="py-1"
             role="listbox"
@@ -77,7 +77,7 @@ const GenreSelector = ({ onGenreSelect, disabled }) => {
             {genres.map((genre) => (
               <li
                 key={genre}
-                className="px-4 py-2 cursor-pointer hover:bg-purple-900/50 text-gray-200 hover:text-white transition-colors"
+                className="px-4 py-2 cursor-pointer hover:bg-indigo-600/50 text-gray-200 hover:text-white transition-colors"
                 role="option"
                 aria-selected={selectedGenre === genre}
                 onClick={() => handleGenreSelect(genre)}

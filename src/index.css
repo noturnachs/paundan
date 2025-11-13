@@ -1,7 +1,13 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
 * {
   font-family: "Inter", sans-serif;
+}
+
+html,
+body {
+  overflow-x: hidden;
 }
 
 @layer utilities {
@@ -35,4 +41,31 @@
   100% {
     transform: translate(0px, 0px) scale(1);
   }
+}
+
+/* Mobile-first responsive adjustments */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Custom scrollbar for synopsis */
+.synopsis-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.synopsis-container::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.5);
+  border-radius: 10px;
+}
+
+.synopsis-container::-webkit-scrollbar-thumb {
+  background: rgba(79, 70, 229, 0.5);
+  border-radius: 10px;
+}
+
+.synopsis-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(79, 70, 229, 0.7);
 }

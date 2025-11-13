@@ -1,10 +1,10 @@
 const MovieCard = ({ movie, loading, error }) => {
   if (loading) {
     return (
-      <div className="w-full max-w-md p-6 rounded-xl bg-gray-900/50 backdrop-blur-md border border-gray-700 shadow-xl">
+      <div className="w-full max-w-2xl mx-auto p-6 rounded-xl bg-gray-900/50 backdrop-blur-md border border-gray-700 shadow-xl">
         <div className="flex flex-col md:flex-row gap-6">
           {/* Poster placeholder */}
-          <div className="w-full md:w-1/3 h-64 md:h-auto bg-gray-800 rounded-lg animate-pulse"></div>
+          <div className="w-full md:w-1/3 h-64 md:h-96 bg-gray-800 rounded-lg animate-pulse"></div>
 
           <div className="w-full md:w-2/3 space-y-4">
             {/* Title placeholder */}
@@ -34,7 +34,7 @@ const MovieCard = ({ movie, loading, error }) => {
 
   if (error) {
     return (
-      <div className="w-full max-w-md p-6 rounded-xl bg-red-900/20 backdrop-blur-md border border-red-700 shadow-xl text-center">
+      <div className="w-full max-w-2xl mx-auto p-6 rounded-xl bg-red-900/20 backdrop-blur-md border border-red-700 shadow-xl text-center">
         <svg
           className="w-12 h-12 mx-auto text-red-500 mb-4"
           fill="none"
@@ -75,20 +75,21 @@ const MovieCard = ({ movie, loading, error }) => {
   };
 
   return (
-    <div className="w-full max-w-md p-6 rounded-xl bg-gray-900/50 backdrop-blur-md border border-gray-700 shadow-xl transition-all hover:shadow-purple-500/20">
+    <div className="w-full max-w-2xl mx-auto p-6 rounded-xl bg-gray-900/50 backdrop-blur-md border border-gray-700 shadow-xl transition-all hover:shadow-purple-500/20">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Movie Poster */}
         {safeMovie.poster ? (
-          <div className="w-full md:w-1/3 flex-shrink-0">
+          <div className="w-full md:w-1/3 flex-shrink-0 flex justify-center md:justify-start">
             <img
               src={safeMovie.poster}
               alt={`${safeMovie.title} poster`}
-              className="w-full h-auto object-cover rounded-lg shadow-lg"
+              className="w-auto h-auto object-cover rounded-lg shadow-lg"
+              style={{ maxHeight: "400px", minHeight: "300px" }}
               loading="lazy"
             />
           </div>
         ) : (
-          <div className="w-full md:w-1/3 h-64 flex-shrink-0 bg-gray-800 rounded-lg flex items-center justify-center">
+          <div className="w-full md:w-1/3 h-96 flex-shrink-0 bg-gray-800 rounded-lg flex items-center justify-center">
             <svg
               className="w-16 h-16 text-gray-600"
               fill="none"
@@ -109,11 +110,18 @@ const MovieCard = ({ movie, loading, error }) => {
         {/* Movie Details */}
         <div className="w-full md:w-2/3">
           <div className="flex justify-between items-start">
-            <h2 className="text-2xl font-bold text-white mb-1">
+            <h2 className="text-xl md:text-2xl font-bold text-white mb-1">
               {safeMovie.title}
             </h2>
             <div className="flex items-center">
-              <span className="px-2 py-1 bg-purple-900/50 rounded text-purple-200 text-sm font-medium">
+              <span className="px-2 py-1 bg-gray-800 rounded text-amber-400 text-sm font-medium flex items-center">
+                <svg
+                  className="w-4 h-4 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
                 {safeMovie.rating}
               </span>
               {safeMovie.verified && (
@@ -141,18 +149,34 @@ const MovieCard = ({ movie, loading, error }) => {
           <div className="flex flex-wrap gap-x-4 text-gray-400 text-sm mb-4">
             <span>{safeMovie.year}</span>
             <span>{safeMovie.runtime}</span>
-            {safeMovie.genre && <span>{safeMovie.genre}</span>}
           </div>
+
+          {safeMovie.genre && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {safeMovie.genre.split(", ").map((g, idx) => (
+                <span
+                  key={idx}
+                  className="px-2 py-1 bg-gray-800/70 rounded-md text-xs text-gray-300"
+                >
+                  {g}
+                </span>
+              ))}
+            </div>
+          )}
 
           <p className="text-gray-400 mb-3">
             Directed by{" "}
             <span className="text-gray-300">{safeMovie.director}</span>
           </p>
 
-          <p className="text-gray-300 mb-4">{safeMovie.synopsis}</p>
+          <div className="max-h-[180px] md:max-h-none overflow-y-auto pr-2 mb-4 synopsis-container">
+            <p className="text-gray-300 text-sm md:text-base">
+              {safeMovie.synopsis}
+            </p>
+          </div>
 
           {safeMovie.awards && (
-            <p className="text-yellow-400 text-sm mb-4">{safeMovie.awards}</p>
+            <p className="text-amber-400 text-sm mb-4">{safeMovie.awards}</p>
           )}
 
           <div className="mt-4">
@@ -162,13 +186,13 @@ const MovieCard = ({ movie, loading, error }) => {
                 safeMovie.starring.map((actor, index) => (
                   <span
                     key={index}
-                    className="inline-block px-3 py-1 bg-gray-800 text-gray-300 rounded-full text-sm"
+                    className="inline-block px-3 py-1 bg-gray-800/70 text-gray-300 rounded-md text-sm"
                   >
                     {actor}
                   </span>
                 ))
               ) : (
-                <span className="inline-block px-3 py-1 bg-gray-800 text-gray-300 rounded-full text-sm">
+                <span className="inline-block px-3 py-1 bg-gray-800/70 text-gray-300 rounded-md text-sm">
                   {safeMovie.starring}
                 </span>
               )}
