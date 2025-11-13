@@ -5,12 +5,38 @@ const useMovieGenerator = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [previousMovies, setPreviousMovies] = useState([]);
 
   const generateMovie = async (genre) => {
     try {
       setLoading(true);
       setError(null);
+
+      // Get new movie from API
       const movieData = await groqService.generateMovie(genre);
+
+      // Check if we've seen this movie before
+      const isDuplicate = previousMovies.some(
+        (prevMovie) => prevMovie.title === movieData.title
+      );
+
+      // If it's a duplicate and we haven't tried too many times, try again
+      if (isDuplicate && previousMovies.length < 5) {
+        console.log("Got duplicate movie, trying again...");
+        setLoading(false);
+        return generateMovie(genre);
+      }
+
+      // Add to previous movies list to avoid duplicates
+      setPreviousMovies((prev) => {
+        const updatedList = [...prev, movieData];
+        // Keep only the last 5 movies to avoid memory issues
+        if (updatedList.length > 5) {
+          return updatedList.slice(updatedList.length - 5);
+        }
+        return updatedList;
+      });
+
       setMovie(movieData);
     } catch (err) {
       console.error("API Error:", err);

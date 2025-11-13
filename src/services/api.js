@@ -18,6 +18,9 @@ const createGroqService = () => {
   // Function to generate movie recommendation
   const generateMovie = async (genre) => {
     try {
+      // Add randomization to prevent getting the same movie
+      const randomSeed = Math.floor(Math.random() * 10000);
+
       const response = await groqInstance.post(
         API_CONFIG.ENDPOINTS.CHAT_COMPLETIONS,
         {
@@ -30,7 +33,7 @@ const createGroqService = () => {
             },
             {
               role: "user",
-              content: `Suggest one real movie in the "${genre}" genre. Return the response in JSON format with the following structure: 
+              content: `Suggest one real movie in the "${genre}" genre that I might not have seen before. Make it somewhat random and different each time. Seed: ${randomSeed}. Return the response in JSON format with the following structure: 
             {
               "title": "Movie Title",
               "year": "Year of Release",
@@ -41,7 +44,7 @@ const createGroqService = () => {
             }`,
             },
           ],
-          temperature: 0.2, // Low temperature for more factual responses
+          temperature: 0.7, // Higher temperature for more variety
           max_tokens: 500,
         }
       );
