@@ -69,3 +69,26 @@ body {
 .synopsis-container::-webkit-scrollbar-thumb:hover {
   background: rgba(79, 70, 229, 0.7);
 }
+
+/* Poster container styling */
+.poster-container {
+  width: 100%;
+  max-width: 300px;
+  background-color: rgba(17, 24, 39, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .poster-container {
+    min-height: 400px;
+    max-width: 100%;
+  }
+}
+
+.poster-container img {
+  max-height: 450px;
+  width: auto;
+  margin: 0 auto;
+}

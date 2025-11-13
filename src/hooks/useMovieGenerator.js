@@ -51,6 +51,11 @@ const useMovieGenerator = () => {
           runtime: omdbMovie.Runtime,
           genre: omdbMovie.Genre,
           awards: omdbMovie.Awards,
+          ratings: omdbMovie.Ratings || [], // Include all ratings sources
+          metascore: omdbMovie.Metascore,
+          boxOffice: omdbMovie.BoxOffice,
+          rated: omdbMovie.Rated,
+          released: omdbMovie.Released,
           // Use OMDb data for accuracy, but fall back to Groq data if needed
           year: omdbMovie.Year || groqMovie.year,
           director: omdbMovie.Director || groqMovie.director,
@@ -87,6 +92,7 @@ const useMovieGenerator = () => {
         // Still show the movie, but mark as unverified
         setMovie({
           ...groqMovie,
+          ratings: [{ Source: "AI Estimated", Value: groqMovie.rating }],
           verified: false,
         });
       }
