@@ -135,35 +135,21 @@ const MovieCard = ({ movie, loading, error }) => {
     <div className="w-full max-w-2xl mx-auto p-6 rounded-xl bg-gray-900/50 backdrop-blur-md border border-gray-700 shadow-xl transition-all hover:shadow-purple-500/20">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Movie Poster */}
-        {safeMovie.poster ? (
-          <div className="w-full md:w-2/5 flex-shrink-0 flex justify-center md:justify-start">
-            <div className="poster-container h-auto rounded-lg shadow-lg overflow-hidden">
-              <img
-                src={safeMovie.poster}
-                alt={`${safeMovie.title} poster`}
-                className="w-full h-auto object-contain"
-                loading="lazy"
-              />
-            </div>
+        <div className="w-full md:w-2/5 flex-shrink-0 flex justify-center md:justify-start">
+          <div className="poster-container h-auto rounded-lg shadow-lg overflow-hidden">
+            <img
+              src={safeMovie.poster}
+              alt={`${safeMovie.title} poster`}
+              className="w-full h-auto object-contain"
+              loading="lazy"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src =
+                  "https://via.placeholder.com/300x450?text=No+Poster+Available";
+              }}
+            />
           </div>
-        ) : (
-          <div className="w-full md:w-2/5 h-96 flex-shrink-0 bg-gray-800 rounded-lg flex items-center justify-center">
-            <svg
-              className="w-16 h-16 text-gray-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M7 4v16M17 4v16M3 8h18M3 16h18"
-              ></path>
-            </svg>
-          </div>
-        )}
+        </div>
 
         {/* Movie Details */}
         <div className="w-full md:w-3/5">
@@ -252,7 +238,7 @@ const MovieCard = ({ movie, loading, error }) => {
             </p>
           </div>
 
-          {safeMovie.awards && (
+          {safeMovie.awards && safeMovie.awards !== "N/A" && (
             <p className="text-amber-400 text-sm mb-4">{safeMovie.awards}</p>
           )}
 

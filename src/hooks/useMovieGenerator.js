@@ -9,6 +9,20 @@ const useMovieGenerator = () => {
   const [previousMovies, setPreviousMovies] = useState([]);
 
   /**
+   * Clean up movie title for better OMDb search results
+   * @param {string} title - Original movie title
+   * @returns {string} - Cleaned up title
+   */
+  const cleanMovieTitle = (title) => {
+    // Remove any text in parentheses, brackets, or after colons
+    return title
+      .replace(/\([^)]*\)/g, "")
+      .replace(/\[[^\]]*\]/g, "")
+      .replace(/:.*/g, "")
+      .trim();
+  };
+
+  /**
    * Generate a movie recommendation using Groq AI and enhance with OMDb data
    */
   const generateMovie = async (genre) => {
@@ -33,19 +47,24 @@ const useMovieGenerator = () => {
 
       try {
         // Step 2: Verify and enhance with OMDb data
-        const year = groqMovie.year
-          ? parseInt(groqMovie.year.match(/\d{4}/)?.[0])
-          : null;
-        const omdbMovie = await omdbService.getMovieByTitle(
-          groqMovie.title,
-          year
-        );
+        // Extract year if it exists in the format "2023" or "(2023)"
+        const yearMatch = groqMovie.year ? groqMovie.year.match(/\d{4}/) : null;
+        const year = yearMatch ? parseInt(yearMatch[0]) : null;
+
+        // Clean up the title for better search results
+        const cleanedTitle = cleanMovieTitle(groqMovie.title);
+
+        // Try to get movie details from OMDb
+        const omdbMovie = await omdbService.getMovieByTitle(cleanedTitle, year);
 
         // Step 3: Merge data from both sources
         const enhancedMovie = {
           ...groqMovie,
           imdbID: omdbMovie.imdbID,
-          poster: omdbService.getPosterUrl(omdbMovie.imdbID),
+          poster:
+            omdbMovie.Poster !== "N/A"
+              ? omdbService.getPosterUrl(omdbMovie.imdbID)
+              : omdbService.getDefaultPosterUrl(),
           plot: omdbMovie.Plot || groqMovie.synopsis,
           imdbRating: omdbMovie.imdbRating,
           runtime: omdbMovie.Runtime,
@@ -92,6 +111,7 @@ const useMovieGenerator = () => {
         // Still show the movie, but mark as unverified
         setMovie({
           ...groqMovie,
+          poster: omdbService.getDefaultPosterUrl(),
           ratings: [{ Source: "AI Estimated", Value: groqMovie.rating }],
           verified: false,
         });

@@ -76,23 +76,53 @@ const createOmdbService = () => {
    */
   const getMovieByTitle = async (title, year = null) => {
     try {
-      const params = {
+      // First try exact match
+      const exactMatchParams = {
         apikey: API_KEY,
         t: title,
         plot: "full",
       };
 
       if (year) {
-        params.y = year;
+        exactMatchParams.y = year;
       }
 
-      const response = await omdbInstance.get("", { params });
+      const exactMatchResponse = await omdbInstance.get("", {
+        params: exactMatchParams,
+      });
 
-      if (response.data.Response === "True") {
-        return response.data;
-      } else {
-        throw new Error(response.data.Error || "Movie not found");
+      if (exactMatchResponse.data.Response === "True") {
+        return exactMatchResponse.data;
       }
+
+      // If exact match fails, try search and get the first result
+      const searchParams = {
+        apikey: API_KEY,
+        s: title,
+        type: "movie",
+      };
+
+      if (year) {
+        searchParams.y = year;
+      }
+
+      const searchResponse = await omdbInstance.get("", {
+        params: searchParams,
+      });
+
+      if (
+        searchResponse.data.Response === "True" &&
+        searchResponse.data.Search &&
+        searchResponse.data.Search.length > 0
+      ) {
+        // Get the first search result's IMDb ID
+        const imdbId = searchResponse.data.Search[0].imdbID;
+
+        // Get full details using the IMDb ID
+        return await getMovieById(imdbId);
+      }
+
+      throw new Error(exactMatchResponse.data.Error || "Movie not found");
     } catch (error) {
       console.error("Error getting movie details:", error);
       throw error;
@@ -109,11 +139,20 @@ const createOmdbService = () => {
     return `${POSTER_URL}?i=${imdbId}&h=${height}&apikey=${API_KEY}`;
   };
 
+  /**
+   * Get a default poster URL for when no poster is available
+   * @returns {string} - URL to a default poster image
+   */
+  const getDefaultPosterUrl = () => {
+    return "https://via.placeholder.com/300x450?text=No+Poster+Available";
+  };
+
   return {
     searchMovies,
     getMovieById,
     getMovieByTitle,
     getPosterUrl,
+    getDefaultPosterUrl,
   };
 };
 
