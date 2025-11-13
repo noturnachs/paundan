@@ -1,11 +1,13 @@
 import { useState } from "react";
 import GenreSelector from "./components/GenreSelector";
+import LanguageSelector from "./components/LanguageSelector";
 import MovieCard from "./components/MovieCard";
 import Button from "./components/Button";
 import useMovieGenerator from "./hooks/useMovieGenerator";
 
 function App() {
   const [selectedGenre, setSelectedGenre] = useState("");
+  const [selectedLanguage, setSelectedLanguage] = useState("");
   const { movie, loading, error, generateMovie, resetMovie } =
     useMovieGenerator();
 
@@ -14,15 +16,20 @@ function App() {
     resetMovie();
   };
 
+  const handleLanguageSelect = (language) => {
+    setSelectedLanguage(language);
+    resetMovie();
+  };
+
   const handleGenerateMovie = () => {
     if (selectedGenre) {
-      generateMovie(selectedGenre);
+      generateMovie(selectedGenre, selectedLanguage);
     }
   };
 
   const handleRegenerateMovie = () => {
     if (selectedGenre) {
-      generateMovie(selectedGenre);
+      generateMovie(selectedGenre, selectedLanguage);
     }
   };
 
@@ -51,17 +58,31 @@ function App() {
           </header>
 
           <div className="flex flex-col items-center space-y-6 md:space-y-8">
-            <div className="w-full max-w-xs">
-              <label
-                htmlFor="genre-selector"
-                className="block text-sm font-medium text-gray-300 mb-2"
-              >
-                Select a movie genre
-              </label>
-              <GenreSelector
-                onGenreSelect={handleGenreSelect}
-                disabled={loading}
-              />
+            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+              <div className="w-full">
+                <label
+                  htmlFor="genre-selector"
+                  className="block text-sm font-medium text-gray-300 mb-2"
+                >
+                  Select a movie genre
+                </label>
+                <GenreSelector
+                  onGenreSelect={handleGenreSelect}
+                  disabled={loading}
+                />
+              </div>
+              <div className="w-full">
+                <label
+                  htmlFor="language-selector"
+                  className="block text-sm font-medium text-gray-300 mb-2"
+                >
+                  Select a language
+                </label>
+                <LanguageSelector
+                  onLanguageSelect={handleLanguageSelect}
+                  disabled={loading}
+                />
+              </div>
             </div>
 
             {!movie && (
@@ -159,12 +180,13 @@ function App() {
                 <Button
                   onClick={() => {
                     setSelectedGenre("");
+                    setSelectedLanguage("");
                     resetMovie();
                   }}
                   variant="secondary"
                   className="flex-1"
                 >
-                  Change Genre
+                  Change Preferences
                 </Button>
               </div>
             )}

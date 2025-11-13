@@ -71,6 +71,7 @@ const MovieCard = ({ movie, loading, error }) => {
     poster: movie.poster || null,
     runtime: movie.runtime || "Unknown",
     genre: movie.genre || "",
+    language: movie.language || "",
     awards: movie.awards || "",
     rated: movie.rated || "",
     released: movie.released || "",
@@ -187,6 +188,7 @@ const MovieCard = ({ movie, loading, error }) => {
             <span>{safeMovie.year}</span>
             <span>{safeMovie.runtime}</span>
             {safeMovie.rated && <span>{safeMovie.rated}</span>}
+            {safeMovie.language && <span>{safeMovie.language}</span>}
           </div>
 
           {/* Ratings Section */}

@@ -16,7 +16,7 @@ const createGroqService = () => {
   });
 
   // Function to generate movie recommendation
-  const generateMovie = async (genre) => {
+  const generateMovie = async (genre, language = "") => {
     try {
       // Add randomization to prevent getting the same movie
       const randomSeed = Math.floor(Math.random() * 10000);
@@ -33,7 +33,9 @@ const createGroqService = () => {
             },
             {
               role: "user",
-              content: `Suggest one real movie in the "${genre}" genre that I might not have seen before. Make it somewhat random and different each time. Seed: ${randomSeed}. 
+              content: `Suggest one real movie in the "${genre}" genre${
+                language ? ` in ${language} language` : ""
+              } that I might not have seen before. Make it somewhat random and different each time. Seed: ${randomSeed}. 
             
             Important: Make sure the movie title is EXACTLY as it appears in IMDb.
             
@@ -44,7 +46,8 @@ const createGroqService = () => {
               "director": "Director Name",
               "synopsis": "Brief synopsis of the movie (2-3 sentences)",
               "rating": "IMDB rating (e.g., 8.5/10)",
-              "starring": ["Actor 1", "Actor 2", "Actor 3"]
+              "starring": ["Actor 1", "Actor 2", "Actor 3"],
+              "language": "Movie language"
             }`,
             },
           ],

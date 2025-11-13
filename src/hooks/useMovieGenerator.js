@@ -24,14 +24,16 @@ const useMovieGenerator = () => {
 
   /**
    * Generate a movie recommendation using Groq AI and enhance with OMDb data
+   * @param {string} genre - The movie genre
+   * @param {string} language - The movie language (optional)
    */
-  const generateMovie = async (genre) => {
+  const generateMovie = async (genre, language = "") => {
     try {
       setLoading(true);
       setError(null);
 
       // Step 1: Get movie suggestion from Groq
-      const groqMovie = await groqService.generateMovie(genre);
+      const groqMovie = await groqService.generateMovie(genre, language);
 
       // Check if we've seen this movie before
       const isDuplicate = previousMovies.some(
@@ -69,6 +71,7 @@ const useMovieGenerator = () => {
           imdbRating: omdbMovie.imdbRating,
           runtime: omdbMovie.Runtime,
           genre: omdbMovie.Genre,
+          language: omdbMovie.Language || groqMovie.language || language,
           awards: omdbMovie.Awards,
           ratings: omdbMovie.Ratings || [], // Include all ratings sources
           metascore: omdbMovie.Metascore,
@@ -113,6 +116,7 @@ const useMovieGenerator = () => {
           ...groqMovie,
           poster: omdbService.getDefaultPosterUrl(),
           ratings: [{ Source: "AI Estimated", Value: groqMovie.rating }],
+          language: groqMovie.language || language,
           verified: false,
         });
       }
