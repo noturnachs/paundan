@@ -13,8 +13,25 @@ const useMovieGenerator = () => {
       const movieData = await groqService.generateMovie(genre);
       setMovie(movieData);
     } catch (err) {
-      setError("Failed to generate movie. Please try again.");
-      console.error(err);
+      console.error("API Error:", err);
+
+      // Handle different types of errors
+      if (err.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        const errorMessage =
+          err.response.data?.error?.message ||
+          "Server error. Please check your API key and try again.";
+        setError(errorMessage);
+      } else if (err.request) {
+        // The request was made but no response was received
+        setError(
+          "No response from server. Please check your internet connection."
+        );
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setError(err.message || "Failed to generate movie. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

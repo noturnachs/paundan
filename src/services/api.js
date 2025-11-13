@@ -1,13 +1,14 @@
 import axios from "axios";
+import { API_CONFIG } from "../utils/config";
 
 // Create API service for Groq
 const createGroqService = () => {
-  // Using environment variable or a secure method to store the API key
-  const apiKey = import.meta.env.VITE_GROQ_API_KEY;
+  // Using environment variable to store the API key
+  const apiKey = API_CONFIG.GROQ_API_KEY;
 
   // Create axios instance with base configuration
   const groqInstance = axios.create({
-    baseURL: "https://api.groq.com/v1",
+    baseURL: API_CONFIG.BASE_URL,
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
@@ -17,17 +18,19 @@ const createGroqService = () => {
   // Function to generate movie recommendation
   const generateMovie = async (genre) => {
     try {
-      const response = await groqInstance.post("/chat/completions", {
-        model: "llama-3.1-8b-instant", // Using the fastest model with good price/performance
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are a movie recommendation expert. Provide accurate information about real movies only. Avoid hallucinations.",
-          },
-          {
-            role: "user",
-            content: `Suggest one real movie in the "${genre}" genre. Return the response in JSON format with the following structure: 
+      const response = await groqInstance.post(
+        API_CONFIG.ENDPOINTS.CHAT_COMPLETIONS,
+        {
+          model: API_CONFIG.DEFAULT_MODEL,
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are a movie recommendation expert. Provide accurate information about real movies only. Avoid hallucinations.",
+            },
+            {
+              role: "user",
+              content: `Suggest one real movie in the "${genre}" genre. Return the response in JSON format with the following structure: 
             {
               "title": "Movie Title",
               "year": "Year of Release",
@@ -36,16 +39,28 @@ const createGroqService = () => {
               "rating": "IMDB rating (e.g., 8.5/10)",
               "starring": ["Actor 1", "Actor 2", "Actor 3"]
             }`,
-          },
-        ],
-        temperature: 0.2, // Low temperature for more factual responses
-        max_tokens: 500,
-      });
+            },
+          ],
+          temperature: 0.2, // Low temperature for more factual responses
+          max_tokens: 500,
+        }
+      );
 
       // Extract the JSON response from the text
       const content = response.data.choices[0].message.content;
-      // Parse the JSON string to an object
-      return JSON.parse(content);
+
+      // Handle potential JSON parsing issues
+      try {
+        return JSON.parse(content);
+      } catch (parseError) {
+        console.error("Error parsing JSON response:", parseError);
+        // Attempt to extract JSON from the text if it contains other text
+        const jsonMatch = content.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          return JSON.parse(jsonMatch[0]);
+        }
+        throw new Error("Invalid JSON response from API");
+      }
     } catch (error) {
       console.error("Error generating movie recommendation:", error);
       throw error;

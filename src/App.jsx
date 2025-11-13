@@ -42,7 +42,7 @@ function App() {
         <div className="max-w-4xl mx-auto">
           <header className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-blue-400 to-teal-400">
-              Random Movie Picker
+              What to watch?
             </h1>
             <p className="text-gray-400 max-w-lg mx-auto">
               Discover your next favorite movie with our AI-powered
