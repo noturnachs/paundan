@@ -1,5 +1,6 @@
 import { useState } from "react";
 import groqService from "../services/api";
+import omdbService from "../services/omdbApi";
 
 const useMovieGenerator = () => {
   const [movie, setMovie] = useState(null);
@@ -7,17 +8,20 @@ const useMovieGenerator = () => {
   const [error, setError] = useState(null);
   const [previousMovies, setPreviousMovies] = useState([]);
 
+  /**
+   * Generate a movie recommendation using Groq AI and enhance with OMDb data
+   */
   const generateMovie = async (genre) => {
     try {
       setLoading(true);
       setError(null);
 
-      // Get new movie from API
-      const movieData = await groqService.generateMovie(genre);
+      // Step 1: Get movie suggestion from Groq
+      const groqMovie = await groqService.generateMovie(genre);
 
       // Check if we've seen this movie before
       const isDuplicate = previousMovies.some(
-        (prevMovie) => prevMovie.title === movieData.title
+        (prevMovie) => prevMovie.title === groqMovie.title
       );
 
       // If it's a duplicate and we haven't tried too many times, try again
@@ -27,17 +31,65 @@ const useMovieGenerator = () => {
         return generateMovie(genre);
       }
 
-      // Add to previous movies list to avoid duplicates
-      setPreviousMovies((prev) => {
-        const updatedList = [...prev, movieData];
-        // Keep only the last 5 movies to avoid memory issues
-        if (updatedList.length > 5) {
-          return updatedList.slice(updatedList.length - 5);
-        }
-        return updatedList;
-      });
+      try {
+        // Step 2: Verify and enhance with OMDb data
+        const year = groqMovie.year
+          ? parseInt(groqMovie.year.match(/\d{4}/)?.[0])
+          : null;
+        const omdbMovie = await omdbService.getMovieByTitle(
+          groqMovie.title,
+          year
+        );
 
-      setMovie(movieData);
+        // Step 3: Merge data from both sources
+        const enhancedMovie = {
+          ...groqMovie,
+          imdbID: omdbMovie.imdbID,
+          poster: omdbService.getPosterUrl(omdbMovie.imdbID),
+          plot: omdbMovie.Plot || groqMovie.synopsis,
+          imdbRating: omdbMovie.imdbRating,
+          runtime: omdbMovie.Runtime,
+          genre: omdbMovie.Genre,
+          awards: omdbMovie.Awards,
+          // Use OMDb data for accuracy, but fall back to Groq data if needed
+          year: omdbMovie.Year || groqMovie.year,
+          director: omdbMovie.Director || groqMovie.director,
+          actors: omdbMovie.Actors
+            ? omdbMovie.Actors.split(", ")
+            : groqMovie.starring,
+          verified: true,
+        };
+
+        // Add to previous movies list to avoid duplicates
+        setPreviousMovies((prev) => {
+          const updatedList = [...prev, enhancedMovie];
+          // Keep only the last 5 movies to avoid memory issues
+          if (updatedList.length > 5) {
+            return updatedList.slice(updatedList.length - 5);
+          }
+          return updatedList;
+        });
+
+        setMovie(enhancedMovie);
+      } catch (omdbError) {
+        // If OMDb lookup fails, just use the Groq data
+        console.warn("Could not verify with OMDb:", omdbError);
+
+        // Add to previous movies list
+        setPreviousMovies((prev) => {
+          const updatedList = [...prev, groqMovie];
+          if (updatedList.length > 5) {
+            return updatedList.slice(updatedList.length - 5);
+          }
+          return updatedList;
+        });
+
+        // Still show the movie, but mark as unverified
+        setMovie({
+          ...groqMovie,
+          verified: false,
+        });
+      }
     } catch (err) {
       console.error("API Error:", err);
 

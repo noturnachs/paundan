@@ -29,14 +29,18 @@ const createGroqService = () => {
             {
               role: "system",
               content:
-                "You are a movie recommendation expert. Provide accurate information about real movies only. Avoid hallucinations.",
+                "You are a movie recommendation expert. Provide accurate information about real movies only. Avoid hallucinations. Be precise with movie titles to ensure they can be looked up in external databases.",
             },
             {
               role: "user",
-              content: `Suggest one real movie in the "${genre}" genre that I might not have seen before. Make it somewhat random and different each time. Seed: ${randomSeed}. Return the response in JSON format with the following structure: 
+              content: `Suggest one real movie in the "${genre}" genre that I might not have seen before. Make it somewhat random and different each time. Seed: ${randomSeed}. 
+            
+            Important: Make sure the movie title is EXACTLY as it appears in IMDb.
+            
+            Return the response in JSON format with the following structure: 
             {
               "title": "Movie Title",
-              "year": "Year of Release",
+              "year": "Year of Release (just the 4-digit year)",
               "director": "Director Name",
               "synopsis": "Brief synopsis of the movie (2-3 sentences)",
               "rating": "IMDB rating (e.g., 8.5/10)",
